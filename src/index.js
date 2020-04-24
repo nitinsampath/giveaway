@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Raffle from './Raffle';
+import AppRouter from './routers/AppRouter'
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <Raffle/>,
+  <AppRouter/>,
   document.getElementById('root')
 );
 
