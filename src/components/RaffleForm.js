@@ -1,8 +1,9 @@
 import React from 'react';
 import DateTimePicker from 'react-datetime-picker';
-import { Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
+import { addRaffle } from '../actions/raffles';
 
-export default class RaffleForm extends React.Component {
+class RaffleForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -45,8 +46,12 @@ export default class RaffleForm extends React.Component {
 
     onSubmit= (e) =>{
         e.preventDefault();
+        this.props.dispatch(addRaffle(this.state));   
         this.props.history.push("/");
     }
+
+    onStartDateChange = (startDate) => this.setState({ startDate });
+    onEndDateChange = (endDate) => this.setState({ endDate });
     
     render() {
 
@@ -71,6 +76,7 @@ export default class RaffleForm extends React.Component {
                     Start Date and Time:
                     <DateTimePicker
                     value={this.state.startDate}
+                    onChange={this.onStartDateChange}
                     />
                 </label>
 
@@ -78,6 +84,7 @@ export default class RaffleForm extends React.Component {
                     End Date and Time:
                     <DateTimePicker
                     value={this.state.endDate}
+                    onChange={this.onEndDateChange}
                     />
                 </label>
 
@@ -88,3 +95,5 @@ export default class RaffleForm extends React.Component {
     }
 
 }
+
+export default connect()(RaffleForm);
