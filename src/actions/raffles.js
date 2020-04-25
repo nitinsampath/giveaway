@@ -5,7 +5,8 @@ export const addRaffle = (
         raffleName = '',
         raffleDescription = '',
         startDate = new Date(),
-        endDate = new Date()
+        endDate = new Date(),
+        entries = []
     } = {}) => ({
     type: 'ADD_RAFFLE',
     raffle: {
@@ -13,7 +14,8 @@ export const addRaffle = (
         raffleName,
         raffleDescription,
         startDate,
-        endDate
+        endDate,
+        entries
     }
 });
 

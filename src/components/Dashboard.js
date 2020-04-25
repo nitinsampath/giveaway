@@ -6,6 +6,7 @@ class Dashboard extends React.Component {
     
 
     // probably need to move the conditional render of raffles to a different component called RaffleList
+    // also need to render active, past, and future giveaways based on time
     render() {
         console.log(this.props.raffles); 
         return (

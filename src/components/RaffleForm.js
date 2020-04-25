@@ -10,7 +10,8 @@ class RaffleForm extends React.Component {
             raffleName : '',
             raffleDescription : '',
             startDate: new Date(),
-            endDate: new Date()
+            endDate: new Date(),
+            entries:[]
         }
     }
 
