@@ -15,6 +15,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const app = express();
+const main = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors({ origin: true, credentials: true }));
@@ -40,9 +41,9 @@ app.post("/raffle/new", async (req, res) => {
   }
 });
 
-// app.get("/raffles", async (req, res) => {
-// get all of raffles in firestore
-// });
+app.get("/raffles", async (req, res) => {
+  res.send("return all raffles route");
+});
 
 app.get("/raffle/new", (req, res) => {
   res.send("returned there");
@@ -51,5 +52,5 @@ app.get("/raffle/new", (req, res) => {
 // app.listen(9000, "localhost", function() {
 //   console.log("The ShoeReview Server Has Started!");
 // });
-
-export const webAPI = functions.https.onRequest(app);
+main.use(app);
+export const webAPI = functions.https.onRequest(main);
