@@ -1,7 +1,6 @@
 import { v4 as uuid } from "uuid";
 import axios from "axios";
 
-<<<<<<< HEAD
 // export const addRaffle = (
 //     {
 //         raffleName = '',
@@ -18,26 +17,6 @@ import axios from "axios";
 //         endDate
 //     }
 // });
-=======
-export const addRaffle = (
-    {
-        raffleName = '',
-        raffleDescription = '',
-        startDate = new Date(),
-        endDate = new Date(),
-        entries = []
-    } = {}) => ({
-    type: 'ADD_RAFFLE',
-    raffle: {
-        id: uuid(),
-        raffleName,
-        raffleDescription,
-        startDate,
-        endDate,
-        entries
-    }
-});
->>>>>>> 2aada500bba6b45965327223df3f826e72976352
 
 export const addRaffle = newRaffle => {
   return dispatch => {
@@ -55,7 +34,8 @@ export const addRaffle = newRaffle => {
               raffleName: newRaffle.raffleName,
               raffleDescription: newRaffle.raffleDescription,
               startDate: newRaffle.startDate,
-              endDate: newRaffle.endDate
+              endDate: newRaffle.endDate,
+              raffles: []
             }
           });
         } else {

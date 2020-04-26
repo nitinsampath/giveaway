@@ -4,28 +4,16 @@ import { connect } from "react-redux";
 import { addRaffle } from "../actions/raffles";
 
 class RaffleForm extends React.Component {
-<<<<<<< HEAD
   constructor(props) {
     super(props);
     this.state = {
       raffleName: "",
       raffleDescription: "",
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      entries: []
     };
   }
-=======
-    constructor(props) {
-        super(props);
-        this.state = {
-            raffleName : '',
-            raffleDescription : '',
-            startDate: new Date(),
-            endDate: new Date(),
-            entries:[]
-        }
-    }
->>>>>>> 2aada500bba6b45965327223df3f826e72976352
 
   onNameChange = e => {
     const raffleName = e.target.value;
