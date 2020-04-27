@@ -13,10 +13,12 @@ class RaffleList extends React.Component {
       return <div>Loading.....</div>;
     }
     // return <div>{this.props.data.length}</div>;
-    return this.props.data.map((raffle, index) => {
+    
+    return this.props.data.map((raffle) => {
       // need to pass in key to child component
       return (
         <RaffleCard
+          key={raffle.id}
           raffleName={raffle.raffleName}
           raffleDescription={raffle.raffleDescription}
         ></RaffleCard>

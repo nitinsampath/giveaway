@@ -20,6 +20,7 @@ import axios from "axios";
 
 export const addRaffle = newRaffle => {
   return dispatch => {
+    newRaffle = {...newRaffle, id:uuid()};
     return axios
       .post(
         "http://localhost:5000/giveaway-4989b/us-central1/webAPI/raffle/new",
@@ -29,14 +30,7 @@ export const addRaffle = newRaffle => {
         if (response.status === 200) {
           dispatch({
             type: "ADD_RAFFLE",
-            raffle: {
-              id: uuid(),
-              raffleName: newRaffle.raffleName,
-              raffleDescription: newRaffle.raffleDescription,
-              startDate: newRaffle.startDate,
-              endDate: newRaffle.endDate,
-              raffles: []
-            }
+            raffle: newRaffle 
           });
         } else {
           console.log("ERROR: could not create Raffle");
