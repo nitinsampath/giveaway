@@ -16,7 +16,14 @@ class Dashboard extends React.Component {
         >
           Create Giveaway
         </button>
-        <p>Active Giveaways</p>
+        <button
+          onClick={() => {
+            this.props.history.push("/raffles");
+          }}
+        >
+          Active Giveaways
+        </button>
+        {/* <p>Active Giveaways</p>
         {this.props.rafflesList &&
           this.props.rafflesList.raffles.map(raffle => {
             return (
@@ -26,7 +33,7 @@ class Dashboard extends React.Component {
                 ----------------------------
               </div>
             );
-          })}
+          })} */}
       </div>
     );
   }

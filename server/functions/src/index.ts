@@ -42,7 +42,24 @@ app.post("/raffle/new", async (req, res) => {
 });
 
 app.get("/raffles", async (req, res) => {
-  res.send("return all raffles route");
+  // going to need to add user auth, and user ID once implemeneted to get associated raffles.
+  // need to add error checking..
+  try {
+    let response: FirebaseFirestore.DocumentData[] = [];
+    await db
+      .collection("raffles")
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(raffle => {
+          console.log(raffle.data());
+          response.push(raffle.data());
+          // res.status(200).send(snapshot.data());
+        });
+      });
+    res.status(200).send(response);
+  } catch (e) {
+    res.status(404).send("unable to complete request");
+  }
 });
 
 app.get("/raffle/new", (req, res) => {

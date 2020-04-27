@@ -44,3 +44,34 @@ export const addRaffle = newRaffle => {
       });
   };
 };
+
+export const getRaffles = () => {
+  //make axios request to pass as payload to reducer
+  return dispatch => {
+    console.log("here");
+    dispatch(loadingRaffles());
+    axios
+      .get("http://localhost:5000/giveaway-4989b/us-central1/webAPI/raffles")
+      .then(response => {
+        console.log(response);
+        if (response.status === 200) {
+          dispatch(displayRaffles(response.data));
+        } else {
+          console.log("error in fetching raffles");
+        }
+      });
+  };
+};
+
+export const loadingRaffles = () => {
+  return {
+    type: "LOAD_RAFFLES"
+  };
+};
+
+export const displayRaffles = raffles => {
+  return {
+    type: "SUCCESS_RAFFLES",
+    raffles
+  };
+};
