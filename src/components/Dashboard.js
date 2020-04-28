@@ -23,6 +23,13 @@ class Dashboard extends React.Component {
         >
           Active Giveaways
         </button>
+        <button
+          onClick={() => {
+            this.props.history.push("/register");
+          }}
+        >
+          Register
+        </button>
         {/* <p>Active Giveaways</p>
         {this.props.rafflesList &&
           this.props.rafflesList.raffles.map(raffle => {
