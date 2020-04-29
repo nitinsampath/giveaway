@@ -1,6 +1,8 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { addUser } from "../actions/users";
+import { checkLogin } from "../firebase/firebase";
 
 // TO DO: DISPLAY ERROR WARNINGS FOR BAD FIELDS, MORE FORM VALIDATION, DISPLAY LOADING SYMBOL TO SHOW SIGNING UP USER?
 
@@ -20,6 +22,13 @@ class RegistrationForm extends React.Component {
       }
     };
   }
+
+  // componentDidMount() {
+  //   console.log("here");
+  //   if (this.state.isLoggedIn) {
+  //     this.props.history.push("/");
+  //   }
+  // }
 
   handleChange = event => {
     event.preventDefault();
@@ -74,50 +83,62 @@ class RegistrationForm extends React.Component {
         email: this.state.email,
         password: this.state.password
       };
-      this.props.dispatch(addUser(userInfo));
+      this.props.addUser(userInfo);
     } else {
       // display error message
       console.log("NOT VALID FORM");
     }
   };
   render() {
-    return (
-      <div>
-        <form onSubmit={this.onSubmit}>
-          <input
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            value={this.state.firstName}
-            onChange={this.handleChange}
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            value={this.state.lastName}
-            onChange={this.handleChange}
-          />
-          <input
-            type="text"
-            placeholder="Email Address"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
+    if (this.props.isLoggedIn) {
+      return <Redirect to="/"></Redirect>;
+    } else {
+      return (
+        <div>
+          <form onSubmit={this.onSubmit}>
+            <input
+              type="text"
+              placeholder="First Name"
+              name="firstName"
+              value={this.state.firstName}
+              onChange={this.handleChange}
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              name="lastName"
+              value={this.state.lastName}
+              onChange={this.handleChange}
+            />
+            <input
+              type="text"
+              placeholder="Email Address"
+              name="email"
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
 
-          <input
-            type="text"
-            placeholder="Password"
-            name="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-          <button>Submit</button>
-        </form>
-      </div>
-    );
+            <input
+              type="text"
+              placeholder="Password"
+              name="password"
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+            <button>Submit</button>
+          </form>
+        </div>
+      );
+    }
   }
 }
 
-export default connect()(RegistrationForm);
+const mapStateToProps = state => ({
+  isLoggedIn: state.isLoggedIn
+});
+
+const mapDispatchToProps = {
+  addUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);

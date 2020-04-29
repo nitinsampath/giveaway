@@ -3,7 +3,8 @@ import { myFirebase } from "../firebase/firebase";
 
 export const addUser = userInfo => {
   return dispatch => {
-    //CREATE_USER_IN_PROGRESS
+    //ADD ERROR CHECKING
+    let webToken = null;
     dispatch(createUserInProgress());
     myFirebase
       .auth()
@@ -15,6 +16,7 @@ export const addUser = userInfo => {
           .auth()
           .currentUser.getIdToken()
           .then(token => {
+            webToken = token;
             axios.post(
               "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users",
               {
@@ -26,14 +28,14 @@ export const addUser = userInfo => {
             );
           })
           .then(response => {
-            console.log(response); //remove
-            // TODO: add action to loginuser redirect to dashboard
-            // if (response.status === 200) {
-            //       dispatch(createUserSuccessfull(response.data));
-            // } else {
-            // //   console.log("error in fetching raffles");
-            //     //error handling show
-            // }
+            const userState = {
+              firstName: userInfo.firstName,
+              lastName: userInfo.lastName,
+              email: userInfo.email,
+              apiToken: webToken
+            };
+            console.log("dispatching success....");
+            dispatch(createUserSuccessfull(userState));
           });
       });
   };
@@ -45,8 +47,16 @@ const createUserInProgress = () => {
   };
 };
 
-const createUserSuccessfull = () => {
+//TODO: NEED TO EDIT TO GO ALONG WITH SIGN IN BUTTON WHEN IMPLEMENTED
+// PASS IN USER INFORMATION AS WELL.
+export const logInUser = () => {
   return {
-    type: "CREATE_USER_SUCCESS"
+    type: "SUCCESSFUL_LOG_IN"
+  };
+};
+const createUserSuccessfull = userState => {
+  return {
+    type: "CREATE_USER_SUCCESS",
+    userState
   };
 };

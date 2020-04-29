@@ -1,8 +1,13 @@
+import { act } from "react-dom/test-utils";
+
 const initialState = {
   raffles: [],
-  isLoading: false
+  isLoading: false,
+  isLoggedIn: false,
+  isLoggingIn: false
 };
 
+//TODO: probably need to split into two reducers??
 const rafflesReducer = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_RAFFLE":
@@ -11,6 +16,23 @@ const rafflesReducer = (state = initialState, action) => {
       return { ...state, isLoading: true };
     case "SUCCESS_RAFFLES":
       return { ...state, isLoading: false, raffles: action.raffles };
+    case "CREATE_USER_IN_PROGRESS":
+      return { ...state, isLoggingIn: true };
+    case "CREATE_USER_SUCCESS":
+      return {
+        ...state,
+        isLoggingIn: false,
+        isLoggedIn: true,
+        firstName: action.firstName,
+        lastName: action.lastName,
+        email: action.email,
+        apiToken: action.apiToken
+      };
+    case "SUCCESSFUL_LOG_IN":
+      return {
+        ...state,
+        isLoggedIn: true
+      };
     default:
       return state;
   }
