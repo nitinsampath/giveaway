@@ -34,13 +34,26 @@ export const addUser = userInfo => {
               email: userInfo.email,
               apiToken: webToken
             };
-            console.log("dispatching success....");
-            dispatch(createUserSuccessfull(userState));
+            dispatch(createUserSuccessful(userState));
           });
       });
   };
 };
 
+export const logoutUser = () => {
+  console.log("herelogout");
+  return dispatch => {
+    myFirebase
+      .auth()
+      .signOut()
+      .then(() => {
+        dispatch(logOutUserSuccessful());
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
 const createUserInProgress = () => {
   return {
     type: "CREATE_USER_IN_PROGRESS"
@@ -54,9 +67,15 @@ export const logInUser = () => {
     type: "SUCCESSFUL_LOG_IN"
   };
 };
-const createUserSuccessfull = userState => {
+const createUserSuccessful = userState => {
   return {
     type: "CREATE_USER_SUCCESS",
     userState
+  };
+};
+
+const logOutUserSuccessful = () => {
+  return {
+    type: "LOG_OUT_SUCCESS"
   };
 };

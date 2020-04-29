@@ -29,7 +29,6 @@ export const getRaffles = () => {
     axios
       .get("http://localhost:5000/giveaway-4989b/us-central1/webAPI/raffles")
       .then(response => {
-        console.log(response);
         if (response.status === 200) {
           dispatch(displayRaffles(response.data));
         } else {

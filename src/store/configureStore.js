@@ -8,5 +8,6 @@ export default () => {
     // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     applyMiddleware(thunk)
   );
+  window.store = store;
   return store;
 };

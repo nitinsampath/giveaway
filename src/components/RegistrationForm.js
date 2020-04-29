@@ -64,7 +64,6 @@ class RegistrationForm extends React.Component {
     let isValid = true;
     let keyValid = true;
     Object.values(errors).forEach(value => {
-      console.log(value);
       keyValid = value.length === 0 ? true : false;
       if (keyValid === false) {
         isValid = false;
