@@ -25,7 +25,6 @@ export const addRaffle = newRaffle => {
 export const getRaffles = () => {
   //make axios request to pass as payload to reducer
   return dispatch => {
-    console.log("here");
     dispatch(loadingRaffles());
     axios
       .get("http://localhost:5000/giveaway-4989b/us-central1/webAPI/raffles")

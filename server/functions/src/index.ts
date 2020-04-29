@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
   res.send("welcome to homepage");
 });
 
+// TODO: CHANGE TO /RAFFLES
 app.post("/raffle/new", async (req, res) => {
   try {
     const newRaffle = req.body;
@@ -62,9 +63,27 @@ app.get("/raffles", async (req, res) => {
   }
 });
 
-app.get("/raffle/new", (req, res) => {
-  res.send("returned there");
+app.post("/users", async (req, res) => {
+  try {
+    const newUser = req.body.userInfo;
+    const newUserRef = await db
+      .collection("users")
+      .doc(newUser.userID)
+      .set(newUser);
+    if (newUserRef) {
+      res.status(200).send("User created");
+    } else {
+      res.status(404).send("User NOT created");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(404).send(error);
+  }
 });
+
+// app.get("/raffle/new", (req, res) => {
+//   res.send("returned there");
+// });
 
 // app.listen(9000, "localhost", function() {
 //   console.log("The ShoeReview Server Has Started!");

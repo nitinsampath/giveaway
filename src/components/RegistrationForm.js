@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { addUser } from "../actions/users";
 
 // TO DO: DISPLAY ERROR WARNINGS FOR BAD FIELDS, MORE FORM VALIDATION, DISPLAY LOADING SYMBOL TO SHOW SIGNING UP USER?
 
@@ -12,10 +13,10 @@ class RegistrationForm extends React.Component {
       email: "",
       password: "",
       errors: {
-        firstName: "INVALID",
-        lastName: "INVALID",
-        email: "INVALID",
-        password: "INVALID"
+        firstName: "Full Name must be 1 characters long!",
+        lastName: "Full Name must be 1 characters long!",
+        email: "Enter a valid email address",
+        password: "Password must be 8 characters long!"
       }
     };
   }
@@ -40,22 +41,25 @@ class RegistrationForm extends React.Component {
         break;
       case "password":
         errors.password =
-          value.length < 8 ? "Password must be 8 characters long!" : "";
+          value.length < 4 ? "Password must be 8 characters long!" : "";
         break;
       default:
         break;
     }
     this.setState({ errors, [name]: value }, () => {
-      console.log(errors);
+      // console.log(errors);
     });
   };
 
   validateForm = errors => {
     let isValid = true;
+    let keyValid = true;
     Object.values(errors).forEach(value => {
-      console.log(value.length);
-      isValid = value.length === 0 ? true : false;
-      console.log(isValid);
+      console.log(value);
+      keyValid = value.length === 0 ? true : false;
+      if (keyValid === false) {
+        isValid = false;
+      }
     });
     return isValid;
   };
@@ -64,6 +68,13 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     //form validation
     if (this.validateForm(this.state.errors)) {
+      const userInfo = {
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        password: this.state.password
+      };
+      this.props.dispatch(addUser(userInfo));
     } else {
       // display error message
       console.log("NOT VALID FORM");
