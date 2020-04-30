@@ -31,7 +31,11 @@ const rafflesReducer = (state = initialState, action) => {
     case "SUCCESSFUL_LOG_IN":
       return {
         ...state,
-        isLoggedIn: true
+        isLoggedIn: true,
+        firstName: action.userState.firstName,
+        lastName: action.userState.lastName,
+        email: action.userState.email,
+        apiToken: action.userState.apiToken
       };
     case "LOG_OUT_SUCCESS":
       return initialState;

@@ -63,8 +63,40 @@ const createUserInProgress = () => {
 //TODO: NEED TO EDIT TO GO ALONG WITH SIGN IN BUTTON WHEN IMPLEMENTED
 // PASS IN USER INFORMATION AS WELL.
 export const logInUser = () => {
+  return dispatch => {
+    const currentUser = myFirebase.auth().currentUser;
+    const uid = currentUser.uid;
+    let userToken;
+    myFirebase
+      .auth()
+      .currentUser.getIdToken()
+      .then(token => {
+        userToken = token;
+        axios
+          .get(
+            "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users/" +
+              uid,
+            {
+              headers: {
+                userToken
+              }
+            }
+          )
+          .then(response => {
+            const userState = {
+              ...response.data,
+              apiToken: userToken
+            };
+            dispatch(successfulLogin(userState));
+          });
+      });
+  };
+};
+
+const successfulLogin = userState => {
   return {
-    type: "SUCCESSFUL_LOG_IN"
+    type: "SUCCESSFUL_LOG_IN",
+    userState
   };
 };
 const createUserSuccessful = userState => {

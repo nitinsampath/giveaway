@@ -52,7 +52,6 @@ app.get("/raffles", async (req, res) => {
       .get()
       .then(snapshot => {
         snapshot.forEach(raffle => {
-          console.log(raffle.data());
           response.push(raffle.data());
           // res.status(200).send(snapshot.data());
         });
@@ -63,6 +62,23 @@ app.get("/raffles", async (req, res) => {
   }
 });
 
+//TO DO: need to add authentication
+app.get("/users/:uid", async (req, res) => {
+  const uid = req.params.uid;
+  try {
+    await db
+      .collection("users")
+      .doc(uid)
+      .get()
+      .then(snapshot => {
+        res.status(200).send(snapshot.data());
+      });
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+//creates new user resource in the db
 app.post("/users", async (req, res) => {
   try {
     const newUser = req.body.userInfo;

@@ -12,8 +12,6 @@ const store = configureStore();
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     store.dispatch(logInUser());
-  } else {
-    console.log("not here");
   }
 });
 
