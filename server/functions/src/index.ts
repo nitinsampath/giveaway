@@ -20,6 +20,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors({ origin: true, credentials: true }));
 
+// const verifyFirebaseToken = (req, res, next) => {
+//   const { idToken } = req.headers;
+//   admin
+//     .auth()
+//     .verifyIdToken(idToken)
+//     .then(() => {
+//       next();
+//     })
+//     .catch(error => {
+//       console.log(error);
+//        res.status(404).send(error);
+//     });
+// };
+
+// app.use(verifyFirebaseToken);
+
 app.get("/", (req, res) => {
   res.send("welcome to homepage");
 });

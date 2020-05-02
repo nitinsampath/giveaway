@@ -9,8 +9,10 @@ import { logInUser } from "./actions/users";
 
 const store = configureStore();
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
+    console.log("user");
+    console.log(user);
     store.dispatch(logInUser());
   }
 });
