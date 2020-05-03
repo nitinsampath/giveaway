@@ -4,11 +4,14 @@ const initialState = {
   raffles: [],
   isLoading: false,
   isLoggedIn: false,
-  isLoggingIn: false
+  isLoggingIn: false,
+  isUserDataFetched: false,
 };
 
 //TODO: probably need to split into two reducers??
 const rafflesReducer = (state = initialState, action) => {
+  console.log(action.type);
+  console.log(state);
   switch (action.type) {
     case "ADD_RAFFLE":
       return { ...state, raffles: [...state.raffles, action.raffle] };
@@ -22,20 +25,20 @@ const rafflesReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggingIn: false,
-        isLoggedIn: true,
-        firstName: action.userState.firstName,
-        lastName: action.userState.lastName,
-        email: action.userState.email,
-        apiToken: action.userState.apiToken
       };
     case "SUCCESSFUL_LOG_IN":
       return {
         ...state,
         isLoggedIn: true,
-        firstName: action.userState.firstName,
-        lastName: action.userState.lastName,
+      };
+
+    case "USER_DATA_FETCH_COMPLETE":
+      return {
+        ...state,
+        isUserDataFetched: true,
+        displayName: action.userState.displayName,
         email: action.userState.email,
-        apiToken: action.userState.apiToken
+        apiToken: action.userState.apiToken,
       };
     case "LOG_OUT_SUCCESS":
       return initialState;

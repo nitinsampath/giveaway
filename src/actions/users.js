@@ -4,41 +4,45 @@ import { myFirebase, googleProvider } from "../firebase/firebase";
 export const addUser = (userInfo) => {
   return (dispatch) => {
     //ADD ERROR CHECKING
-    let webToken = null;
-    dispatch(createUserInProgress());
-    myFirebase
-      .auth()
-      .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
-      .then((user) => {
-        userInfo = { ...userInfo, userID: user.user.uid };
-        console.log(userInfo);
-        myFirebase
-          .auth()
-          .currentUser.getIdToken()
-          .then((token) => {
-            webToken = token;
-            axios.post(
-              "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users",
-              {
-                headers: {
-                  token,
-                },
-                userInfo,
-              }
-            );
-          })
-          .then((response) => {
-            const userState = {
-              firstName: userInfo.firstName,
-              lastName: userInfo.lastName,
-              email: userInfo.email,
-              apiToken: webToken,
-            };
-            dispatch(createUserSuccessful(userState));
-          });
-      });
+    const displayName = userInfo.firstName + " " + userInfo.lastName;
+    createUserInProgress(dispatch).then(() => {
+      console.log("here7");
+      myFirebase
+        .auth()
+        .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+        .then((user) => {
+          userInfo = { ...userInfo, userID: user.user.uid, displayName };
+          console.log(userInfo);
+          myFirebase
+            .auth()
+            .currentUser.getIdToken()
+            .then((token) => {
+              axios.post(
+                "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users",
+                {
+                  headers: {
+                    token,
+                  },
+                  userInfo,
+                }
+              );
+            })
+            .then((response) => {
+              dispatch(createUserSuccessful());
+            });
+        });
+    });
   };
 };
+
+const createUserInProgress = (dispatch) =>
+  new Promise((resolve, reject) => {
+    dispatch(createUserInProgressAction());
+    console.log("done");
+    resolve();
+  });
+
+//add actions
 export const loginWithGoogle = (response) => {
   myFirebase
     .auth()
@@ -68,6 +72,44 @@ export const loginWithGoogle = (response) => {
     });
 };
 
+export const getUserData = () => {
+  return (dispatch) => {
+    const currentUser = myFirebase.auth().currentUser;
+    const uid = currentUser.uid;
+    let userToken;
+    myFirebase
+      .auth()
+      .currentUser.getIdToken()
+      .then((token) => {
+        userToken = token;
+        axios
+          .get(
+            "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users/" +
+              uid,
+            {
+              headers: {
+                userToken,
+              },
+            }
+          )
+          .then((response) => {
+            const userState = {
+              ...response.data,
+              apiToken: userToken,
+            };
+            dispatch(successfulDataFetch(userState));
+          });
+      });
+  };
+};
+
+const successfulDataFetch = (userState) => {
+  return {
+    type: "USER_DATA_FETCH_COMPLETE",
+    userState,
+  };
+};
+
 export const logoutUser = () => {
   return (dispatch) => {
     myFirebase
@@ -81,7 +123,7 @@ export const logoutUser = () => {
       });
   };
 };
-const createUserInProgress = () => {
+const createUserInProgressAction = () => {
   return {
     type: "CREATE_USER_IN_PROGRESS",
   };
@@ -114,8 +156,6 @@ export const logInUser = () => {
               ...response.data,
               apiToken: userToken,
             };
-            console.log("userState");
-            console.log(userState);
             dispatch(successfulLogin(userState));
           });
       });
@@ -128,10 +168,9 @@ const successfulLogin = (userState) => {
     userState,
   };
 };
-const createUserSuccessful = (userState) => {
+const createUserSuccessful = () => {
   return {
     type: "CREATE_USER_SUCCESS",
-    userState,
   };
 };
 
