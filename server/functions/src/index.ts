@@ -9,7 +9,7 @@ var serviceAccount = require("./giveaway-4989b-4790113c0e4c.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://giveaway-4989b.firebaseio.com"
+  databaseURL: "https://giveaway-4989b.firebaseio.com",
 });
 
 const db = admin.firestore();
@@ -66,8 +66,8 @@ app.get("/raffles", async (req, res) => {
     await db
       .collection("raffles")
       .get()
-      .then(snapshot => {
-        snapshot.forEach(raffle => {
+      .then((snapshot) => {
+        snapshot.forEach((raffle) => {
           response.push(raffle.data());
           // res.status(200).send(snapshot.data());
         });
@@ -86,7 +86,7 @@ app.get("/users/:uid", async (req, res) => {
       .collection("users")
       .doc(uid)
       .get()
-      .then(snapshot => {
+      .then((snapshot) => {
         res.status(200).send(snapshot.data());
       });
   } catch (error) {
@@ -105,6 +105,7 @@ app.post("/users", async (req, res) => {
     if (newUserRef) {
       res.status(200).send("User created");
     } else {
+      console.log("nooooo");
       res.status(404).send("User NOT created");
     }
   } catch (error) {

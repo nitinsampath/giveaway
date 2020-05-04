@@ -7,11 +7,24 @@ import { logoutUser, getUserData } from "../actions/users.js";
 //do all datafetching in this component
 class MyAccount extends React.Component {
   componentDidMount() {
+    console.log("checking...");
     if (
       this.props.isLoggedIn &&
       !this.props.isLoggingIn &&
       !this.props.isUserDataFetched
     ) {
+      console.log("starting....");
+      this.props.getUserData();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.isLoggedIn &&
+      !this.props.isLoggingIn &&
+      !this.props.isUserDataFetched
+    ) {
+      console.log("starting....");
       this.props.getUserData();
     }
   }

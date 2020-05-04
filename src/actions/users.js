@@ -6,7 +6,6 @@ export const addUser = (userInfo) => {
     //ADD ERROR CHECKING
     const displayName = userInfo.firstName + " " + userInfo.lastName;
     createUserInProgress(dispatch).then(() => {
-      console.log("here7");
       myFirebase
         .auth()
         .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
@@ -17,18 +16,20 @@ export const addUser = (userInfo) => {
             .auth()
             .currentUser.getIdToken()
             .then((token) => {
-              axios.post(
-                "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users",
-                {
-                  headers: {
-                    token,
-                  },
-                  userInfo,
-                }
-              );
-            })
-            .then((response) => {
-              dispatch(createUserSuccessful());
+              axios
+                .post(
+                  "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users",
+                  {
+                    headers: {
+                      token,
+                    },
+                    userInfo,
+                  }
+                )
+                .then((response) => {
+                  console.log(response);
+                  dispatch(createUserSuccessful());
+                });
             });
         });
     });
@@ -38,7 +39,6 @@ export const addUser = (userInfo) => {
 const createUserInProgress = (dispatch) =>
   new Promise((resolve, reject) => {
     dispatch(createUserInProgressAction());
-    console.log("done");
     resolve();
   });
 
@@ -97,6 +97,7 @@ export const getUserData = () => {
               ...response.data,
               apiToken: userToken,
             };
+            console.log(userState);
             dispatch(successfulDataFetch(userState));
           });
       });
@@ -133,39 +134,13 @@ const createUserInProgressAction = () => {
 // PASS IN USER INFORMATION AS WELL.
 export const logInUser = () => {
   return (dispatch) => {
-    const currentUser = myFirebase.auth().currentUser;
-    const uid = currentUser.uid;
-    let userToken;
-    myFirebase
-      .auth()
-      .currentUser.getIdToken()
-      .then((token) => {
-        userToken = token;
-        axios
-          .get(
-            "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users/" +
-              uid,
-            {
-              headers: {
-                userToken,
-              },
-            }
-          )
-          .then((response) => {
-            const userState = {
-              ...response.data,
-              apiToken: userToken,
-            };
-            dispatch(successfulLogin(userState));
-          });
-      });
+    dispatch(successfulLogin());
   };
 };
 
-const successfulLogin = (userState) => {
+const successfulLogin = () => {
   return {
     type: "SUCCESSFUL_LOG_IN",
-    userState,
   };
 };
 const createUserSuccessful = () => {
