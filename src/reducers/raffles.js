@@ -2,7 +2,7 @@ import { act } from "react-dom/test-utils";
 
 const initialState = {
   raffles: [],
-  isLoading: false,
+  isLoadingRaffles: false,
   isLoggedIn: false,
   isLoggingIn: false,
   isUserDataFetched: false,
@@ -16,9 +16,9 @@ const rafflesReducer = (state = initialState, action) => {
     case "ADD_RAFFLE":
       return { ...state, raffles: [...state.raffles, action.raffle] };
     case "LOAD_RAFFLES":
-      return { ...state, isLoading: true };
+      return { ...state, isLoadingRaffles: true };
     case "SUCCESS_RAFFLES":
-      return { ...state, isLoading: false, raffles: action.raffles };
+      return { ...state, isLoadingRaffles: false, raffles: action.raffles };
     case "CREATE_USER_IN_PROGRESS":
       return { ...state, isLoggingIn: true };
     case "CREATE_USER_SUCCESS":

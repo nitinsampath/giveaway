@@ -49,13 +49,6 @@ class Dashboard extends React.Component {
     return (
       <div>
         <h1>Dashboard</h1>
-        <button
-          onClick={() => {
-            this.props.history.push("/raffles");
-          }}
-        >
-          Active Giveaways
-        </button>
         {button}
       </div>
     );

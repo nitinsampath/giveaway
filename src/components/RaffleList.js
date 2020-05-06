@@ -3,9 +3,10 @@ import { connect } from "react-redux";
 import { getRaffles } from "../actions/raffles";
 import RaffleCard from "./RaffleCard";
 
+//TO DO: add checks when refreshing the page
 class RaffleList extends React.Component {
   componentDidMount() {
-    this.props.getRaffles();
+    this.props.getRaffles(this.props.userID);
   }
   render() {
     // if state is loading then place spinner, if not place raffleList
@@ -13,7 +14,7 @@ class RaffleList extends React.Component {
       return <div>Loading.....</div>;
     }
     // return <div>{this.props.data.length}</div>;
-    
+
     return this.props.data.map((raffle) => {
       // need to pass in key to child component
       return (
@@ -27,13 +28,14 @@ class RaffleList extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.raffles,
-  loading: state.isLoading
+  loading: state.isLoadingRaffles,
+  userID: state.userID,
 });
 
 const mapDispatchToProps = {
-  getRaffles
+  getRaffles,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RaffleList);

@@ -52,6 +52,13 @@ class MyAccount extends React.Component {
           >
             Create Giveaway
           </button>
+          <button
+            onClick={() => {
+              this.props.history.push("/raffles");
+            }}
+          >
+            Active Giveaways
+          </button>
         </div>
       );
     }

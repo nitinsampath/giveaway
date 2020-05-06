@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
 import axios from "axios";
 
+//TO DO: ERROR actions when requests arent returning
 export const addRaffle = (newRaffle, userID) => {
   return (dispatch) => {
     newRaffle = { ...newRaffle, id: uuid() };
@@ -24,12 +25,16 @@ export const addRaffle = (newRaffle, userID) => {
   };
 };
 
-export const getRaffles = () => {
+export const getRaffles = (userID) => {
   //make axios request to pass as payload to reducer
   return (dispatch) => {
     dispatch(loadingRaffles());
     axios
-      .get("http://localhost:5000/giveaway-4989b/us-central1/webAPI/raffles")
+      .get(
+        "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users/" +
+          userID +
+          "/raffles"
+      )
       .then((response) => {
         if (response.status === 200) {
           dispatch(displayRaffles(response.data));
