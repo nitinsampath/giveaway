@@ -35,6 +35,7 @@ const rafflesReducer = (state = initialState, action) => {
     case "USER_DATA_FETCH_COMPLETE":
       return {
         ...state,
+        userID: action.userState.userID,
         isUserDataFetched: true,
         displayName: action.userState.displayName,
         email: action.userState.email,

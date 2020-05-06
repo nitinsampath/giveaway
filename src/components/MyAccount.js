@@ -45,6 +45,13 @@ class MyAccount extends React.Component {
           >
             Logout
           </button>
+          <button
+            onClick={() => {
+              this.props.history.push("/raffle/new");
+            }}
+          >
+            Create Giveaway
+          </button>
         </div>
       );
     }

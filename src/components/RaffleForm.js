@@ -11,45 +11,44 @@ class RaffleForm extends React.Component {
       raffleDescription: "",
       startDate: new Date(),
       endDate: new Date(),
-      entries: []
     };
   }
 
-  onNameChange = e => {
+  onNameChange = (e) => {
     const raffleName = e.target.value;
     this.setState(() => {
       return {
-        raffleName
+        raffleName,
       };
     });
   };
 
-  onDescriptionChange = e => {
+  onDescriptionChange = (e) => {
     const raffleDescription = e.target.value;
     this.setState(() => {
       return {
-        raffleDescription
+        raffleDescription,
       };
     });
   };
 
-  onDurationChange = e => {
+  onDurationChange = (e) => {
     const raffleDescription = e.target.value;
     this.setState(() => {
       return {
-        raffleDescription
+        raffleDescription,
       };
     });
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
-    this.props.dispatch(addRaffle(this.state));
-    this.props.history.push("/");
+    this.props.dispatch(addRaffle(this.state, this.props.userID));
+    this.props.history.push("/myAccount");
   };
 
-  onStartDateChange = startDate => this.setState({ startDate });
-  onEndDateChange = endDate => this.setState({ endDate });
+  onStartDateChange = (startDate) => this.setState({ startDate });
+  onEndDateChange = (endDate) => this.setState({ endDate });
 
   render() {
     return (
@@ -91,4 +90,10 @@ class RaffleForm extends React.Component {
   }
 }
 
-export default connect()(RaffleForm);
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+  };
+};
+
+export default connect(mapStateToProps)(RaffleForm);

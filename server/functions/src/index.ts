@@ -41,6 +41,7 @@ app.get("/", (req, res) => {
 });
 
 // TODO: CHANGE TO /RAFFLES
+//get rid of this
 app.post("/raffle/new", async (req, res) => {
   try {
     const newRaffle = req.body;
@@ -58,6 +59,7 @@ app.post("/raffle/new", async (req, res) => {
   }
 });
 
+//can get rid of this..
 app.get("/raffles", async (req, res) => {
   // going to need to add user auth, and user ID once implemeneted to get associated raffles.
   // need to add error checking..
@@ -75,6 +77,55 @@ app.get("/raffles", async (req, res) => {
     res.status(200).send(response);
   } catch (e) {
     res.status(404).send("unable to complete request");
+  }
+});
+
+//creates new raffle under user collection
+//TO DO: add auth
+app.post("/users/:uid/raffles", async (req, res) => {
+  const uid = req.params.uid;
+  const newRaffle = req.body;
+  const raffleID = newRaffle.id;
+  console.log(raffleID);
+  try {
+    let newRaffleRef = await db
+      .collection("users")
+      .doc(uid)
+      .collection("raffles")
+      .doc(raffleID)
+      .set(newRaffle);
+    if (newRaffleRef) {
+      res.status(200).send("raffle Created");
+    } else {
+      res.status(500).send("unable to create raffle");
+    }
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+//TO DO: need to add authentication
+app.get("/users/:uid/raffles", async (req, res) => {
+  const uid = req.params.uid;
+  try {
+    let response: FirebaseFirestore.DocumentData[] = [];
+    await db
+      .collection("users")
+      .doc(uid)
+      .collection("raffles")
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((raffle) => {
+          response.push(raffle.data());
+          // res.status(200).send(snapshot.data());
+        });
+      })
+      .catch((error) => {
+        res.status(500).send(error);
+      });
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(404).send(error);
   }
 });
 

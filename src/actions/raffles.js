@@ -1,12 +1,14 @@
 import { v4 as uuid } from "uuid";
 import axios from "axios";
 
-export const addRaffle = (newRaffle) => {
+export const addRaffle = (newRaffle, userID) => {
   return (dispatch) => {
     newRaffle = { ...newRaffle, id: uuid() };
     return axios
       .post(
-        "http://localhost:5000/giveaway-4989b/us-central1/webAPI/raffle/new",
+        "http://localhost:5000/giveaway-4989b/us-central1/webAPI/users/" +
+          userID +
+          "/raffles",
         newRaffle
       )
       .then((response) => {
